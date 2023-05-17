@@ -1,16 +1,28 @@
-# This is a sample Python script.
+import tpc
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import os
+from datetime import datetime
+from dotenv import load_dotenv
 
+load_dotenv()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+if __name__ == "__main__":
+    # 참여자 명단
+    blog_name_list = [
+        "nx006",
+        "studying-ddomi",
+        "didrecord",
+        "jjiye716",
+        "gugu76",
+    ]
 
+    start_date = datetime(2023, 5, 14)
+    end_date = datetime(2023, 5, 28)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    access_token: str = os.getenv('ACCESS_TOKEN')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    blog_posts = tpc.fetch_blog_posts_in_period_all(blog_name_list, start_date, end_date, access_token)
+    for blog in blog_posts:
+        print(f"Blog: {blog['blog_name']}")
+        for post in blog['posts']:
+            print(f"  Post: {post}")
