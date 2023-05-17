@@ -51,7 +51,7 @@ def fetch_blog_posts_in_period(
 
 
 def fetch_blog_posts_in_period_all(
-        user_blog_url_list: list[str],
+        blog_name_list: list[str],
         start_date: datetime,
         end_date: datetime,
         access_token: str) -> list[dict[str, Union[list[str], str]]]:
@@ -61,7 +61,7 @@ def fetch_blog_posts_in_period_all(
     Uses the fetch_blog_posts_in_period function to fetch the posts from each individual blog.
 
     Args:
-        user_blog_url_list (list of str): The list of Tistory blog names.
+        blog_name_list (list of str): The list of Tistory blog names.
         start_date (datetime.datetime): The start date of the range.
         end_date (datetime.datetime): The end date of the range.
         access_token (str): The access token for the Tistory API.
@@ -73,10 +73,10 @@ def fetch_blog_posts_in_period_all(
     """
     all_posts: list[dict[str, Union[list[str], str]]] = []
 
-    for user_blog_url in user_blog_url_list:
-        user_posts = fetch_blog_posts_in_period(user_blog_url, start_date, end_date, access_token)
+    for blog_name in blog_name_list:
+        user_posts = fetch_blog_posts_in_period(blog_name, start_date, end_date, access_token)
         all_posts.append({
-            "blog_name": user_blog_url,
+            "blog_name": blog_name,
             "posts": user_posts,
         })
 
