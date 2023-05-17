@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: © 2023 Lee Junseon (nx006) <limazero14@gmail.com>
 # SPDX-License-Identifier: Apache-2.0 license
 
-from datetime import datetime, timedelta
+from datetime import datetime
+
 import requests
 
 
@@ -26,3 +27,15 @@ def fetch_blog_posts_in_period(user_blog_url, start_date, end_date, access_token
 
         # Increment the page number for the next iteration
         page_number += 1
+
+
+def fetch_blog_posts_in_period_all(user_blog_url_list, start_date, end_date, access_token):
+    all_posts = []
+
+    for user_blog_url in user_blog_url_list:
+        user_posts = fetch_blog_posts_in_period(user_blog_url, start_date, end_date, access_token)
+        all_posts.extend(user_posts)
+
+    return all_posts
+
+
