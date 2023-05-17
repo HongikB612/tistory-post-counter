@@ -35,10 +35,8 @@ def fetch_blog_posts_in_period(
         # Construct the API URL
         api_url: str = f"https://www.tistory.com/apis/post/list?access_token={access_token}&output=json&blogName={blog_name}&page={page_number}"
 
-
         # Fetch the JSON data from the API
         response = requests.get(api_url).json()
-
 
         status: int = response['tistory']['status']
         if status != "200":
