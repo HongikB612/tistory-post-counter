@@ -35,8 +35,15 @@ def fetch_blog_posts_in_period(
         # Construct the API URL
         api_url: str = f"https://www.tistory.com/apis/post/list?access_token={access_token}&output=json&blogName={blog_name}&page={page_number}"
 
+
         # Fetch the JSON data from the API
         response = requests.get(api_url).json()
+
+
+        status: int = response['tistory']['status']
+        if status != "200":
+            error_msg = f"Status: {status} Error message: {response['tistory'].get('error_message', 'No error message')}"
+            raise Exception(error_msg)
 
         # Extract the posts
         for post in response['tistory']['item']['posts']:
@@ -74,10 +81,13 @@ def fetch_blog_posts_in_period_all(
     all_posts: list[dict[str, Union[list[str], str]]] = []
 
     for blog_name in blog_name_list:
-        user_posts = fetch_blog_posts_in_period(blog_name, start_date, end_date, access_token)
-        all_posts.append({
-            "blog_name": blog_name,
-            "posts": user_posts,
-        })
+        try:
+            user_posts = fetch_blog_posts_in_period(blog_name, start_date, end_date, access_token)
+            all_posts.append({
+                "blog_name": blog_name,
+                "posts": user_posts,
+            })
+        except Exception as e:
+            print(e)
 
     return all_posts
