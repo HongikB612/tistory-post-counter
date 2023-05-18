@@ -34,7 +34,6 @@ def fetch_blog_posts_in_period(
     while True:
         # Construct the API URL
         api_url: str = f"https://www.tistory.com/apis/post/list?access_token={access_token}&output=json&blogName={blog_name}&page={page_number}"
-        print(api_url)
 
         # Fetch the JSON data from the API
         response = requests.get(api_url).json()
@@ -115,7 +114,7 @@ def get_access_token(client_id, client_secret, redirect_uri, code):
 
     response = requests.get(url, params=params)
     if response.status_code == 200:
-        return response.text
+        return response.text.split("=")[1]
     else:
         raise Exception(f"Failed to get access token: {response.text}")
 

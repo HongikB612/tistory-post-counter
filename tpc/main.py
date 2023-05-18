@@ -1,9 +1,10 @@
-import tpc
-
 import os
-from datetime import datetime
-from dotenv import load_dotenv
 import webbrowser
+from datetime import datetime
+
+from dotenv import load_dotenv
+
+import tpc
 
 load_dotenv()
 
