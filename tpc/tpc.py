@@ -117,7 +117,3 @@ def get_access_token(client_id, client_secret, redirect_uri, code):
         return response.text.split("=")[1]
     else:
         raise Exception(f"Failed to get access token: {response.text}")
-
-
-def display_status(status):
-    print(f"Status: {status}")
