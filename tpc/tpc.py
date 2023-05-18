@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: © 2023 Lee Junseon (nx006) <limazero14@gmail.com>
-# SPDX-License-Identifier: Apache-2.0 license
+# SPDX-License-Identifier: Apache-2.0
 
 from datetime import datetime
 from typing import Union
