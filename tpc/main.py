@@ -3,6 +3,7 @@ import tpc
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+import webbrowser
 
 load_dotenv()
 
@@ -19,7 +20,29 @@ if __name__ == "__main__":
     start_date = datetime(2023, 5, 14)
     end_date = datetime(2023, 5, 28)
 
-    access_token: str = os.getenv('ACCESS_TOKEN')
+    client_id: str = os.getenv('CLIENT_ID')
+    redirect_url: str = os.getenv('REDIRECT_URL')
+
+    try:
+        auth_url: str = tpc.get_authorization_url(
+            client_id=client_id,
+            redirect_uri=redirect_url,
+        )
+    except Exception as e:
+        print(e)
+        exit(1)
+
+    print(f'Move to the following URL and authorize the app: {auth_url}')
+    webbrowser.open(auth_url)
+    code = input('Input provided code: ').strip()
+
+    secret_key: str = os.getenv('SECRET_KEY')
+    access_token: str = tpc.get_access_token(
+        client_id=client_id,
+        client_secret=secret_key,
+        redirect_url=redirect_url,
+        code=code
+    )
 
     blog_posts = tpc.fetch_blog_posts_in_period_all(blog_name_list, start_date, end_date, access_token)
     for blog in blog_posts:
