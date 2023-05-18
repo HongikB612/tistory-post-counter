@@ -44,6 +44,8 @@ def fetch_blog_posts_in_period(
             raise Exception(error_msg)
 
         # Extract the posts
+        if 'posts' not in response['tistory']['item']:
+            return posts  # Return if there are no more posts
         for post in response['tistory']['item']['posts']:
             post_date = datetime.strptime(post['date'], '%Y-%m-%d %H:%M:%S')
             if start_date <= post_date <= end_date:
@@ -86,7 +88,7 @@ def fetch_blog_posts_in_period_all(
                 "posts": user_posts,
             })
         except Exception as e:
-            print(e)
+            print(f"Failed to fetch posts from {blog_name}: {e}")
 
     return all_posts
 
