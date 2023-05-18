@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Union
 
 import requests
+import re
 
 
 def fetch_blog_posts_in_period(
@@ -39,7 +40,7 @@ def fetch_blog_posts_in_period(
         # Fetch the JSON data from the API
         response = requests.get(api_url).json()
 
-        status: int = response['tistory']['status']
+        status = response['tistory']['status']
         if status != "200":
             error_msg = f"Status: {status} Error message: {response['tistory'].get('error_message', 'No error message')}"
             raise Exception(error_msg)
@@ -92,16 +93,37 @@ def fetch_blog_posts_in_period_all(
     return all_posts
 
 
-def get_access_token(client_id, client_secret, redirect_uri, code):
+def get_authorization_url(client_id, redirect_uri):
+    url = "https://www.tistory.com/oauth/authorize"
+    params = {
+        "client_id": client_id,
+        "redirect_url": redirect_uri,
+        "response_type": "code",
+    }
+    response = requests.get(url, params=params)
+
+    if response.status_code != 200:
+        # Check if the error message is in the expected format
+        match = re.search('error=(.*?)&error_description=(.*)', response.text)
+        if match:
+            error, description = match.groups()
+            raise Exception(f"Error: {error}. Description: {description}")
+        else:
+            response.raise_for_status()  # raise exception for other non-200 responses
+    return response.url
+
+
+def get_access_token(client_id, client_secret, redirect_url, code):
     url = "https://www.tistory.com/oauth/access_token"
     params = {
         "client_id": client_id,
         "client_secret": client_secret,
-        "redirect_uri": redirect_uri,
+        "redirect_url": redirect_url,
         "code": code,
         "grant_type": "authorization_code"
     }
     response = requests.get(url, params=params)
+    print(response.text)
     if response.status_code == 200:
         return response.text
     else:
