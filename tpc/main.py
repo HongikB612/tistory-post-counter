@@ -29,6 +29,7 @@ if __name__ == "__main__":
             redirect_uri=redirect_url,
         )
     except Exception as e:
+        print('Failed to get authorization URL.')
         print(e)
         exit(1)
 
@@ -37,12 +38,18 @@ if __name__ == "__main__":
     code = input('Input provided code: ').strip()
 
     secret_key: str = os.getenv('SECRET_KEY')
-    access_token: str = tpc.get_access_token(
-        client_id=client_id,
-        client_secret=secret_key,
-        redirect_url=redirect_url,
-        code=code
-    )
+
+    access_token: str = ''
+    try:
+        access_token = tpc.get_access_token(
+            client_id=client_id,
+            client_secret=secret_key,
+            redirect_uri=redirect_url,
+            code=code
+        )
+    except Exception as e:
+        print(e)
+        exit(1)
 
     blog_posts = tpc.fetch_blog_posts_in_period_all(blog_name_list, start_date, end_date, access_token)
     for blog in blog_posts:

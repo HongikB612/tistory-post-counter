@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import Union
 
 import requests
-import re
 
 
 def fetch_blog_posts_in_period(
@@ -97,34 +96,29 @@ def get_authorization_url(client_id, redirect_uri):
     url = "https://www.tistory.com/oauth/authorize"
     params = {
         "client_id": client_id,
-        "redirect_url": redirect_uri,
-        "response_type": "code",
+        "redirect_uri": redirect_uri,
+        "response_type": "code"
     }
-    response = requests.get(url, params=params)
-
-    if response.status_code != 200:
-        # Check if the error message is in the expected format
-        match = re.search('error=(.*?)&error_description=(.*)', response.text)
-        if match:
-            error, description = match.groups()
-            raise Exception(f"Error: {error}. Description: {description}")
-        else:
-            response.raise_for_status()  # raise exception for other non-200 responses
-    return response.url
+    url = url + "?" + "&".join([f"{key}={value}" for key, value in params.items()])
+    return url
 
 
-def get_access_token(client_id, client_secret, redirect_url, code):
+def get_access_token(client_id, client_secret, redirect_uri, code):
     url = "https://www.tistory.com/oauth/access_token"
     params = {
         "client_id": client_id,
         "client_secret": client_secret,
-        "redirect_url": redirect_url,
+        "redirect_uri": redirect_uri,
         "code": code,
         "grant_type": "authorization_code"
     }
+
     response = requests.get(url, params=params)
-    print(response.text)
     if response.status_code == 200:
         return response.text
     else:
         raise Exception(f"Failed to get access token: {response.text}")
+
+
+def display_status(status):
+    print(f"Status: {status}")
