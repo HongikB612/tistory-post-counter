@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2023 Lee Junseon (nx006) <limazero14@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 license
+
 import os
 import webbrowser
 from datetime import datetime
