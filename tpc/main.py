@@ -57,6 +57,8 @@ if __name__ == "__main__":
 
     blog_posts = tpc.fetch_blog_posts_in_period_all(blog_name_list, start_date, end_date, access_token)
     for blog in blog_posts:
-        print(f"Blog: {blog['blog_name']}")
+        print(f"Blog: {blog['blog_name']} : {len(blog['posts'])}")
         for post in blog['posts']:
             print(f"  Post: {post}")
+
+
