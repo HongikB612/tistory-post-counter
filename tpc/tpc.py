@@ -32,11 +32,16 @@ def fetch_blog_posts_in_period(
     page_number: int = 1
 
     while True:
-        # Construct the API URL
-        api_url: str = f"https://www.tistory.com/apis/post/list?access_token={access_token}&output=json&blogName={blog_name}&page={page_number}"
+        api_url: str = f"https://www.tistory.com/apis/post/list"
+        params = {
+            'access_token': access_token,
+            'output': 'json',
+            'blogName': blog_name,
+            'page': page_number,
+        }
 
         # Fetch the JSON data from the API
-        response = requests.get(api_url).json()
+        response = requests.get(api_url, params=params).json()
 
         status = response['tistory']['status']
         if status != "200":
@@ -47,7 +52,7 @@ def fetch_blog_posts_in_period(
         if 'posts' not in response['tistory']['item']:
             return posts  # Return if there are no more posts
         for post in response['tistory']['item']['posts']:
-            post_date = datetime.strptime(post['date'], '%Y-%m-%d %H:%M:%S')
+            post_date: datetime = datetime.strptime(post['date'], '%Y-%m-%d %H:%M:%S')
             if start_date <= post_date <= end_date:
                 posts.append(post['postUrl'])
             elif post_date < start_date:
