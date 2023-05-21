@@ -15,6 +15,7 @@ if __name__ == "__main__":
     # 참여자 명단
     blog_name_list = [
         "nx006",
+        "jungmin402",
         "studying-ddomi",
         "didrecord",
         "jjiye716",
