@@ -61,3 +61,6 @@ ACCESS_TOKEN=1234567890
 ### 6. 게시물 정보 확인
 main.py를 실행하면, 리스트에 포함된 블로그 게시물 정보를 확인할 수 있습니다.
 리스트 명단은 블로그 이름으로 되어 있으며, 수정할 수 있습니다.
+
+## License
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
